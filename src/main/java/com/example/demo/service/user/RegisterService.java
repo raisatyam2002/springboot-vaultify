@@ -30,6 +30,12 @@ public class RegisterService {
 		user.setName(userRequest.getName());
 		user.setUsername(userRequest.getUsername());
 		user.setPassword(encoder.encode(userRequest.getPassword()));
+		try {
+		
 		userRepository.save(user);
+		}
+		catch(Exception e) {
+			throw new RuntimeException("error while saving user "+ e.getMessage());
+		}
 	}
 }

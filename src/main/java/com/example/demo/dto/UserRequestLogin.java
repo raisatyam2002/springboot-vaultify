@@ -1,11 +1,8 @@
 package com.example.demo.dto;
 
-
-public class UserRequest {
-	  private String username;
-	  private String password;
-	  private String name;
-	  public String getUsername() {
+public class UserRequestLogin {
+  
+	public String getUsername() {
 		return username;
 	}
 	public void setUsername(String username) {
@@ -17,12 +14,6 @@ public class UserRequest {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	
- 
+	private String username;
+	private String password;
 }
