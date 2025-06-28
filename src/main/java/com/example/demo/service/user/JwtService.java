@@ -20,22 +20,22 @@ public class JwtService {
     private long jwtExpirationInMs;
 
     // Generate JWT Token with username as subject
-    public String generateToken(String username) {
+    public String generateToken(String id) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
         Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
 
         return Jwts.builder()
-                .setSubject(username)  // put username as subject
+                .setSubject(id)  // put username as subject
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // Get username from token
-    public String extractUsername(String token) {
+    // Get Id from token
+    public String extractId(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
                 .build()

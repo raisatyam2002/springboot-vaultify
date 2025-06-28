@@ -25,7 +25,7 @@ public class LoginService {
 		if(!isPasswordMatch) {
 			throw new RuntimeException("Password is wrong, Please enter the current password");
 		}
-		String token=jwtService.generateToken(user.getUsername());
+		String token=jwtService.generateToken(Long.toString(user.getId()));
 		return token;
 			
 			
