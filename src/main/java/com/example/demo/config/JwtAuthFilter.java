@@ -9,6 +9,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.example.demo.model.User;
 import com.example.demo.repositry.UserRepository;
 import com.example.demo.service.user.JwtService;
 import com.example.demo.util.ErrorResponseUtil;
@@ -52,10 +53,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		String userId = jwtUtil.extractId(token);
 
 		if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userId, null, null);
+			User user = userRepository.findById(Long.parseLong(userId)).orElse(null);
+			if (user != null) {
+				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null, null);
+				auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+				SecurityContextHolder.getContext().setAuthentication(auth);
 
-			auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-			SecurityContextHolder.getContext().setAuthentication(auth);
+			} else {
+				ErrorResponseUtil.sendError(response, 401, "User doesnot exist,Please login or singup  ");
+				return;
+			}
+
 		}
 
 		filterChain.doFilter(request, response);
